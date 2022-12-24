@@ -29,7 +29,7 @@ try:
 
 finally:
 
-    #time.sleep(5)
+    time.sleep(5)
     br.quit()
 
 
