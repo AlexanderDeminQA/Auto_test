@@ -10,6 +10,7 @@ link1 = 'https://arenum.io/ru/scorebeat/tournament/JJbLM4ZYQg-YPpI79Abpkg'
 def browser():
     print(" Браузер открылся")
     browser = webdriver.Chrome()
+    browser.implicitly_wait(5)
     yield browser
     print(' Браузер закрыт')
     browser.quit()
@@ -18,12 +19,11 @@ def browser():
 
 class TestGoogle():
     #@pytest.mark.smok
-    @pytest.mark.skip
+    #@pytest.mark.skip
     def test_redirect_link(self, browser):
         browser.get(link)
         button1 = browser.find_element(By.XPATH, '//div [@class="sb-btn-inner"]')
         button1.click()
-        time.sleep(3)
         test1 = browser.find_element(By.XPATH, '//h3 [@class="sb-title"]')
         save1 = test1.text
         assert save1 == 'Прошедшие'
@@ -34,7 +34,6 @@ class TestArenum():
     def test_button_click(self, browser):
         browser.get(link1)
         button2 = browser.find_element(By.XPATH, '//div[@class="sb-t-title"]')
-        time.sleep(3)
         text1 = button2.text
         assert text1 == 'Flappy Doggo Fast Cup'
 
