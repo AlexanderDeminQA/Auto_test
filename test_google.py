@@ -27,6 +27,11 @@ class TestGoogle():
         test1 = browser.find_element(By.XPATH, '//h3 [@class="sb-title"]')
         save1 = test1.text
         assert save1 == 'Прошедшие'
+    @pytest.mark.xfail
+    def test_no_button(self, browser):
+        browser.get(link)
+        button3 = browser.find_element(By.XPATH, '//div[@class="sb-t-title"]')
+        assert button3, "No button"
 
 class TestArenum():
    # @pytest.mark.regres
