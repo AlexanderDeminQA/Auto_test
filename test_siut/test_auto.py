@@ -2,11 +2,16 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pytest
 import time
+import math
 
-link = "https://stepik.org/lesson/236895/step/1"
 
-class LoginStepik():
-    def test_login_Stepik(self, browser):
+
+
+class TestLoginStepik():
+    @pytest.mark.parametrize('get_link', ["236895", "236896", "236897", "236898", "236899", "236903", "236904", "236905"])
+    def test_link(self, get_link, browser):
+        link = f"https://stepik.org/lesson/{get_link}/step/1"
+        answer = math.log(int(time.time()))
         browser.get(link)
         button1 = browser.find_element(By.XPATH, '//a[@id="ember33"]')
         button1.click()
@@ -20,13 +25,11 @@ class LoginStepik():
         input_password.send_keys(lines[1])
         button2 = browser.find_element(By.XPATH, '//button[@type="submit"]')
         button2.click()
-        input_wait = browser.find_element(By.XPATH, '//textarea[@id="ember87"]')
-        input_wait.send_keys("Passet")
+        time.sleep(3)
+        input_wait = browser.find_element(By.XPATH, '[style="height: 80px;"]')
+        time.sleep(3)
+        input_wait.send_keys(answer)
         button3 = browser.find_element(By.XPATH, '//button[@class="submit-submission"]')
+        time.sleep(3)
         button3.click()
         time.sleep(3)
-
-
-
-
-
