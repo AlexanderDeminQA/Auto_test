@@ -43,12 +43,45 @@ class TestLoginStepik():
         button2 = browser.find_element(By.XPATH, '//button[@type="submit"]')
         button2.click()
         time.sleep(3)
-        input_wait = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "textarea")))
-        time.sleep(3)
-        input_wait.send_keys(answer)
-        button3 = browser.find_element(By.XPATH, '//button[@class="submit-submission"]')
-        time.sleep(3)
-        button3.click()
-        time.sleep(3)
-        check = browser.find_element(By.XPATH, '//p[@class="smart-hints__hint"]').text
-        assert check == 'Correct!'
+        but_new = browser.find_element(By.XPATH, '//button[@class="again-btn white"]').text
+        but_new1 = browser.find_element(By.XPATH, '//button[@class="again-btn white"]').text
+        if but_new == 'Решить снова':
+            but_start = browser.find_element(By.XPATH, '//button[@class="again-btn white"]')
+            but_start.click()
+            input_wait = WebDriverWait(browser, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "textarea")))
+            time.sleep(3)
+            input_wait.send_keys(answer)
+            button3 = browser.find_element(By.XPATH, '//button[@class="submit-submission"]')
+            time.sleep(3)
+            button3.click()
+            time.sleep(3)
+            check = browser.find_element(By.XPATH, '//p[@class="smart-hints__hint"]').text
+            assert check == 'Correct!'
+        elif but_new1 == 'Начать сначала (сброс)':
+            but_start1 = browser.find_element(By.XPATH, '//button[@class="again-btn white"]')
+            but_start1.click()
+            time.sleep(3)
+            but_flutter = browser.find_element(By.CSS_SELECTOR, '#ember292 >button')
+            but_flutter.click()
+            input_wait = WebDriverWait(browser, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "textarea")))
+            time.sleep(3)
+            input_wait.send_keys(answer)
+            button3 = browser.find_element(By.XPATH, '//button[@class="submit-submission"]')
+            time.sleep(3)
+            button3.click()
+            time.sleep(3)
+            check = browser.find_element(By.XPATH, '//p[@class="smart-hints__hint"]').text
+            assert check == 'Correct!'
+        else:
+            input_wait = WebDriverWait(browser, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "textarea")))
+            time.sleep(3)
+            input_wait.send_keys(answer)
+            button3 = browser.find_element(By.XPATH, '//button[@class="submit-submission"]')
+            time.sleep(3)
+            button3.click()
+            time.sleep(3)
+            check = browser.find_element(By.XPATH, '//p[@class="smart-hints__hint"]').text
+            assert check == 'Correct!'
