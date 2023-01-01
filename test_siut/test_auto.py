@@ -1,18 +1,35 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import pytest
 import time
 import math
 
-
-
+links = ['https://stepik.org/lesson/236895/step/1',
+        'https://stepik.org/lesson/236896/step/1',
+        'https://stepik.org/lesson/236897/step/1',
+        'https://stepik.org/lesson/236898/step/1',
+        'https://stepik.org/lesson/236899/step/1',
+        'https://stepik.org/lesson/236903/step/1',
+        'https://stepik.org/lesson/236904/step/1',
+        'https://stepik.org/lesson/236905/step/1'
+        ]
 
 class TestLoginStepik():
-    @pytest.mark.parametrize('get_link', ["236895", "236896", "236897", "236898", "236899", "236903", "236904", "236905"])
-    def test_link(self, get_link, browser):
-        link = f"https://stepik.org/lesson/{get_link}/step/1"
-        answer = math.log(int(time.time()))
+    @pytest.fixture(scope="function")
+    def browser(self):
+        print("\nstart browser for test..")
+        browser = webdriver.Chrome()
+        browser.implicitly_wait(10)
+        yield browser
+        print("\nquit browser..")
+        browser.quit()
+
+    @pytest.mark.parametrize('link', links)
+    def test_link(self, link, browser):
         browser.get(link)
+        answer = str(math.log(int(time.time() - 1.0)))
         button1 = browser.find_element(By.XPATH, '//a[@id="ember33"]')
         button1.click()
         with open("C:\\Users\\schur\\selenium_course\\Block_2\\login.txt") as file_in:
@@ -26,10 +43,12 @@ class TestLoginStepik():
         button2 = browser.find_element(By.XPATH, '//button[@type="submit"]')
         button2.click()
         time.sleep(3)
-        input_wait = browser.find_element(By.XPATH, '[style="height: 80px;"]')
+        input_wait = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "textarea")))
         time.sleep(3)
         input_wait.send_keys(answer)
         button3 = browser.find_element(By.XPATH, '//button[@class="submit-submission"]')
         time.sleep(3)
         button3.click()
         time.sleep(3)
+        check = browser.find_element(By.XPATH, '//p[@class="smart-hints__hint"]').text
+        assert check == 'Correct!'
